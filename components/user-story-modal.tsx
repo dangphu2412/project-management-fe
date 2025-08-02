@@ -12,42 +12,41 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge"
 import { X } from "lucide-react"
 
-interface TaskModalProps {
+interface UserStoryModalProps {
   isOpen: boolean
   onClose: () => void
-  onSubmit: (task: any) => void
-  task?: any
+  onSubmit: (userStory: any) => void
+  userStory?: any
   sprints?: any[]
-  userStories?: any[]
 }
 
-export function TaskModal({ isOpen, onClose, onSubmit, task, sprints = [], userStories = [] }: TaskModalProps) {
+export function UserStoryModal({ isOpen, onClose, onSubmit, userStory, sprints = [] }: UserStoryModalProps) {
   const [formData, setFormData] = useState({
-    title: task?.title || "",
-    description: task?.description || "",
-    priority: task?.priority || "medium",
-    assignee: task?.assignee || "",
-    dueDate: task?.dueDate || "",
-    tags: task?.tags || [],
-    sprintId: task?.sprintId || null,
-    userStoryId: task?.userStoryId || null,
+    title: userStory?.title || "",
+    description: userStory?.description || "",
+    acceptanceCriteria: userStory?.acceptanceCriteria || "",
+    priority: userStory?.priority || "medium",
+    storyPoints: userStory?.storyPoints || "",
+    assignee: userStory?.assignee || "",
+    tags: userStory?.tags || [],
+    sprintId: userStory?.sprintId || null,
   })
   const [newTag, setNewTag] = useState("")
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSubmit({ ...formData, id: task?.id })
+    onSubmit({ ...formData, id: userStory?.id })
     onClose()
-    if (!task) {
+    if (!userStory) {
       setFormData({
         title: "",
         description: "",
+        acceptanceCriteria: "",
         priority: "medium",
+        storyPoints: "",
         assignee: "",
-        dueDate: "",
         tags: [],
         sprintId: null,
-        userStoryId: null,
       })
     }
   }
@@ -69,24 +68,21 @@ export function TaskModal({ isOpen, onClose, onSubmit, task, sprints = [], userS
     })
   }
 
-  // Filter user stories by selected sprint
-  const filteredUserStories = userStories.filter((story) => !formData.sprintId || story.sprintId === formData.sprintId)
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-3xl">
         <DialogHeader>
-          <DialogTitle>{task ? "Edit Task" : "Create New Task"}</DialogTitle>
+          <DialogTitle>{userStory ? "Edit User Story" : "Create New User Story"}</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="title">Task Title</Label>
+            <Label htmlFor="title">User Story Title</Label>
             <Input
               id="title"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              placeholder="Enter task title..."
+              placeholder="As a [user], I want [goal] so that [benefit]..."
               required
             />
           </div>
@@ -97,7 +93,18 @@ export function TaskModal({ isOpen, onClose, onSubmit, task, sprints = [], userS
               id="description"
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              placeholder="Describe the task..."
+              placeholder="Detailed description of the user story..."
+              rows={4}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="acceptanceCriteria">Acceptance Criteria</Label>
+            <Textarea
+              id="acceptanceCriteria"
+              value={formData.acceptanceCriteria}
+              onChange={(e) => setFormData({ ...formData, acceptanceCriteria: e.target.value })}
+              placeholder="Given [context], when [action], then [outcome]..."
               rows={4}
             />
           </div>
@@ -122,13 +129,34 @@ export function TaskModal({ isOpen, onClose, onSubmit, task, sprints = [], userS
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="assignee">Assignee</Label>
+              <Label htmlFor="storyPoints">Story Points</Label>
+              <Select
+                value={formData.storyPoints}
+                onValueChange={(value) => setFormData({ ...formData, storyPoints: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select points" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">1</SelectItem>
+                  <SelectItem value="2">2</SelectItem>
+                  <SelectItem value="3">3</SelectItem>
+                  <SelectItem value="5">5</SelectItem>
+                  <SelectItem value="8">8</SelectItem>
+                  <SelectItem value="13">13</SelectItem>
+                  <SelectItem value="21">21</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="assignee">Product Owner</Label>
               <Select
                 value={formData.assignee}
                 onValueChange={(value) => setFormData({ ...formData, assignee: value })}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select assignee" />
+                  <SelectValue placeholder="Select owner" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="John Doe">John Doe</SelectItem>
@@ -142,15 +170,7 @@ export function TaskModal({ isOpen, onClose, onSubmit, task, sprints = [], userS
               <Label htmlFor="sprint">Sprint</Label>
               <Select
                 value={formData.sprintId || "none"}
-                onValueChange={(value) => {
-                  const newSprintId = value === "none" ? null : value
-                  setFormData({
-                    ...formData,
-                    sprintId: newSprintId,
-                    // Reset user story if sprint changes
-                    userStoryId: newSprintId !== formData.sprintId ? null : formData.userStoryId,
-                  })
-                }}
+                onValueChange={(value) => setFormData({ ...formData, sprintId: value === "none" ? null : value })}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select sprint" />
@@ -165,36 +185,6 @@ export function TaskModal({ isOpen, onClose, onSubmit, task, sprints = [], userS
                 </SelectContent>
               </Select>
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="userStory">User Story</Label>
-              <Select
-                value={formData.userStoryId || "none"}
-                onValueChange={(value) => setFormData({ ...formData, userStoryId: value === "none" ? null : value })}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select user story" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">No User Story</SelectItem>
-                  {filteredUserStories.map((story) => (
-                    <SelectItem key={story.id} value={story.id}>
-                      {story.title.length > 50 ? `${story.title.substring(0, 50)}...` : story.title}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="dueDate">Due Date</Label>
-            <Input
-              id="dueDate"
-              type="date"
-              value={formData.dueDate}
-              onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
-            />
           </div>
 
           <div className="space-y-2">
@@ -224,7 +214,7 @@ export function TaskModal({ isOpen, onClose, onSubmit, task, sprints = [], userS
             <Button type="button" variant="outline" onClick={onClose}>
               Cancel
             </Button>
-            <Button type="submit">{task ? "Update Task" : "Create Task"}</Button>
+            <Button type="submit">{userStory ? "Update User Story" : "Create User Story"}</Button>
           </div>
         </form>
       </DialogContent>
