@@ -20,8 +20,8 @@ import {
   ChevronRight,
 } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { TaskDetailModal } from "@/components/task-detail-modal"
-import { TaskModal } from "@/components/task-modal"
+import { TaskDetailModal } from "@/features/tasks/task-detail-modal"
+import { TaskModal } from "@/features/tasks/task-modal"
 import { ToastNotification } from "@/components/toast-notification"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 

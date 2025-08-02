@@ -2,10 +2,10 @@
 
 import { useState } from "react"
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
-import { AppSidebar } from "@/components/app-sidebar"
-import { BacklogView } from "@/components/backlog-view"
-import { ActiveSprintView } from "@/components/active-sprint-view"
-import { TimelineView } from "@/components/timeline-view"
+import { AppSidebar } from "@/features/sidebar/app-sidebar"
+import { BacklogView } from "@/features/backlog/backlog-view"
+import { ActiveSprintView } from "@/features/sprint/active-sprint-view"
+import { TimelineView } from "@/features/timeline/timeline-view"
 
 export default function TaskManagement() {
   const [activeView, setActiveView] = useState("backlog")
