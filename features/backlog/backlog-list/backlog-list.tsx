@@ -1,6 +1,5 @@
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/shared/design-system/components/ui/collapsible";
-import type React from "react";
-import {useState} from "react";
+import React, {useEffect} from "react";
 import {Button} from "@/shared/design-system/components/ui/button";
 import {
     BookOpen,
@@ -23,9 +22,10 @@ import {
     DropdownMenuTrigger
 } from "@/shared/design-system/components/ui/dropdown-menu";
 import {Card, CardContent, CardHeader} from "@/shared/design-system/components/ui/card";
-import {useBacklogFilterState} from "@/features/backlog/backlog-filters/store/backlog-filter.store";
+import {useBacklogFilterState} from "@/features/backlog/backlog-filters/shared/backlog-filter.store";
 import {useBacklogActionDispatch,} from "@/features/backlog/backlog-header/backlog-actions/shared/backlog-action-store";
 import {useToast} from "@/shared/toast/toast";
+import {useBacklogListDispatch, useBacklogListState} from "@/features/backlog/backlog-list/shared/backlog-list.store";
 
 const mockSprints = [
     {
@@ -139,30 +139,33 @@ const mockTasks = [
 ]
 
 export function BacklogList() {
-    const [userStories, setUserStories] = useState(mockUserStories)
-    const [tasks, setTasks] = useState(mockTasks)
-    const [sprints, setSprints] = useState(mockSprints)
-
     const { searchQuery, priorityFilter, assigneeFilter } = useBacklogFilterState();
     const backlogActionDispatch = useBacklogActionDispatch();
 
-    const [expandedSprints, setExpandedSprints] = useState<string[]>(["backlog", ...mockSprints.map((s) => s.id)])
-    const [expandedStories, setExpandedStories] = useState<string[]>([])
+    const { expandedSprints, expandedStories, sprints, userStories, dragOverTarget, tasks, draggedItem } = useBacklogListState();
+    const listDispatch = useBacklogListDispatch();
 
-    const [draggedItem, setDraggedItem] = useState<{ id: string; type: "story" | "task" } | null>(null)
-    const [dragOverTarget, setDragOverTarget] = useState<string | null>(null)
+    const filteredUserStories = userStories.filter((story) => {
+        const matchesSearch =
+            story.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            story?.description?.toLowerCase().includes(searchQuery.toLowerCase())
+        const matchesPriority = priorityFilter === "all" || story.priorityId === priorityFilter
+        const matchesAssignee = assigneeFilter === "all" || story.assignee === assigneeFilter
+
+        return matchesSearch && matchesPriority && matchesAssignee
+    })
 
     const { addToast } = useToast();
 
     const handleDragStart = (e: React.DragEvent, itemId: string, itemType: "story" | "task") => {
-        setDraggedItem({ id: itemId, type: itemType })
+        listDispatch({ type: 'SET_DRAGGED_ITEM', payload: { id: itemId, type: itemType }})
         e.dataTransfer.setData("text/plain", itemId)
         e.dataTransfer.effectAllowed = "move"
     }
 
     const handleDragEnd = () => {
-        setDraggedItem(null)
-        setDragOverTarget(null)
+        listDispatch({ type: 'SET_DRAGGED_ITEM', payload: null})
+        listDispatch({ type: 'SET_DRAG_OVER_TARGET', payload: null})
     }
 
     const handleDragOver = (e: React.DragEvent) => {
@@ -172,7 +175,7 @@ export function BacklogList() {
 
     const handleDragEnter = (e: React.DragEvent, targetSprintId: string | null) => {
         e.preventDefault()
-        setDragOverTarget(targetSprintId || "backlog")
+        listDispatch({ type: 'SET_DRAG_OVER_TARGET', payload: targetSprintId || "backlog"})
     }
 
     const handleDragLeave = (e: React.DragEvent) => {
@@ -181,7 +184,7 @@ export function BacklogList() {
         const y = e.clientY
 
         if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
-            setDragOverTarget(null)
+            listDispatch({ type: 'SET_DRAG_OVER_TARGET', payload: null})
         }
     }
 
@@ -194,36 +197,33 @@ export function BacklogList() {
         if (draggedItem.type === "story") {
             const story = userStories.find((s) => s.id === itemId)
             if (!story || story.sprintId === targetSprintId) {
-                setDraggedItem(null)
-                setDragOverTarget(null)
+                listDispatch({ type: 'SET_DRAGGED_ITEM', payload: null})
+                listDispatch({ type: 'SET_DRAG_OVER_TARGET', payload: null})
                 return
             }
 
             // Update user story's sprint assignment
-            setUserStories(userStories.map((s) => (s.id === itemId ? { ...s, sprintId: targetSprintId } : s)))
-
-            // Update all tasks in this story to the same sprint
-            setTasks(tasks.map((t) => (t.userStoryId === itemId ? { ...t, sprintId: targetSprintId } : t)))
+            listDispatch({ type: 'SET_USER_STORIES', payload: userStories.map((s) => (s.id === itemId ? { ...s, sprintId: targetSprintId as string } : s))})
+            listDispatch({ type: 'SET_TASKS', payload: tasks.map((t) => (t.userStoryId === itemId ? { ...t, sprintId: targetSprintId as string } : t))})
 
             const targetName = targetSprintId ? sprints.find((s) => s.id === targetSprintId)?.name : "Backlog"
             addToast(`User story "${story.title}" moved to ${targetName}`, "success")
         } else {
             const task = tasks.find((t) => t.id === itemId)
             if (!task || task.sprintId === targetSprintId) {
-                setDraggedItem(null)
-                setDragOverTarget(null)
+                listDispatch({ type: 'SET_DRAGGED_ITEM', payload: null})
+                listDispatch({ type: 'SET_DRAG_OVER_TARGET', payload: null})
                 return
             }
-
             // Update task's sprint assignment
-            setTasks(tasks.map((t) => (t.id === itemId ? { ...t, sprintId: targetSprintId } : t)))
+            listDispatch({ type: 'SET_TASKS', payload: tasks.map((t) => (t.id === itemId ? { ...t, sprintId: targetSprintId as string } : t))})
 
             const targetName = targetSprintId ? sprints.find((s) => s.id === targetSprintId)?.name : "Backlog"
             addToast(`Task "${task.title}" moved to ${targetName}`, "success")
         }
 
-        setDraggedItem(null)
-        setDragOverTarget(null)
+        listDispatch({ type: 'SET_DRAGGED_ITEM', payload: null})
+        listDispatch({ type: 'SET_DRAG_OVER_TARGET', payload: null})
     }
 
     const getPriorityColor = (priority: string) => {
@@ -254,16 +254,6 @@ export function BacklogList() {
         }
     }
 
-    const filteredUserStories = userStories.filter((story) => {
-        const matchesSearch =
-            story.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            story.description.toLowerCase().includes(searchQuery.toLowerCase())
-        const matchesPriority = priorityFilter === "all" || story.priority === priorityFilter
-        const matchesAssignee = assigneeFilter === "all" || story.assignee === assigneeFilter
-
-        return matchesSearch && matchesPriority && matchesAssignee
-    })
-
     const getStoriesBySprint = (sprintId: string | null) => {
         return filteredUserStories.filter((story) => story.sprintId === sprintId)
     }
@@ -274,9 +264,10 @@ export function BacklogList() {
 
     const handleDeleteUserStory = (storyId: string) => {
         const story = userStories.find((s) => s.id === storyId)
-        setUserStories(userStories.filter((story) => story.id !== storyId))
+        listDispatch({ type: 'SET_USER_STORIES', payload: userStories.filter((story) => story.id !== storyId) })
         // Also delete associated tasks
-        setTasks(tasks.filter((task) => task.userStoryId !== storyId))
+        listDispatch({ type: 'SET_TASKS', payload: tasks.filter((task) => task.userStoryId !== storyId)})
+
         if (story) {
             addToast(`User story "${story.title}" deleted successfully`, "success")
         }
@@ -284,15 +275,15 @@ export function BacklogList() {
 
     const handleDeleteTask = (taskId: string) => {
         const task = tasks.find((t) => t.id === taskId)
-        setTasks(tasks.filter((task) => task.id !== taskId))
+        listDispatch({ type: 'SET_TASKS', payload: tasks.filter((task) => task.id !== taskId)})
+
         if (task) {
             addToast(`Task "${task.title}" deleted successfully`, "success")
         }
     }
 
     const handleSprintAction = (sprintId: string, action: string) => {
-        setSprints(
-            sprints.map((sprint) => {
+        listDispatch({ type: 'SET_SPRINTS', payload: sprints.map((sprint) => {
                 if (sprint.id === sprintId) {
                     if (action === "start" && sprint.status === "planning") {
                         return { ...sprint, status: "active" }
@@ -301,17 +292,22 @@ export function BacklogList() {
                     }
                 }
                 return sprint
-            }),
-        )
+            })})
     }
 
     const toggleSprintExpansion = (sprintId: string) => {
-        setExpandedSprints((prev) => (prev.includes(sprintId) ? prev.filter((id) => id !== sprintId) : [...prev, sprintId]))
+        listDispatch({ type: 'TOGGLE_EXPANDED_SPRINT', payload: sprintId })
     }
 
     const toggleStoryExpansion = (storyId: string) => {
-        setExpandedStories((prev) => (prev.includes(storyId) ? prev.filter((id) => id !== storyId) : [...prev, storyId]))
+        listDispatch({type: 'TOGGLE_EXPANDED_STORY', payload: storyId})
     }
+
+    useEffect(() => {
+        listDispatch({ type: 'SET_SPRINTS', payload: mockSprints })
+        listDispatch({ type: 'SET_USER_STORIES', payload: mockUserStories })
+        listDispatch({ type: 'SET_TASKS', payload: mockTasks })
+    }, []);
 
     const renderSprintHeader = (sprint: any) => (
         <div className="flex items-center justify-between p-4 border rounded-lg bg-muted/30">

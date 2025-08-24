@@ -9,7 +9,7 @@ import {
 } from "@/shared/design-system/components/ui/select";
 import { Button } from "@/shared/design-system/components/ui/button";
 import React from "react";
-import {useBacklogFilterDispatch, useBacklogFilterState} from "@/features/backlog/backlog-filters/store/backlog-filter.store";
+import {useBacklogFilterDispatch, useBacklogFilterState} from "@/features/backlog/backlog-filters/shared/backlog-filter.store";
 
 export function BacklogFilter() {
     const { searchQuery, priorityFilter, assigneeFilter } = useBacklogFilterState();
