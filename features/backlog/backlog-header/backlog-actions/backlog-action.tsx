@@ -8,7 +8,7 @@ import {TaskDetailModal} from "@/features/tasks/task-detail-modal";
 import {
     useBacklogActionDispatch,
     useBacklogActionState
-} from "@/features/backlog/backlog-header/backlog-actions/store/provider";
+} from "@/features/backlog/backlog-header/backlog-actions/shared/backlog-action-store";
 import {useToast} from "@/shared/toast/toast";
 
 export function BacklogAction() {

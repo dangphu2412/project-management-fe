@@ -24,7 +24,7 @@ import {
 } from "@/shared/design-system/components/ui/dropdown-menu";
 import {Card, CardContent, CardHeader} from "@/shared/design-system/components/ui/card";
 import {useBacklogFilterState} from "@/features/backlog/backlog-filters/store/backlog-filter.store";
-import {useBacklogActionDispatch,} from "@/features/backlog/backlog-header/backlog-actions/store/provider";
+import {useBacklogActionDispatch,} from "@/features/backlog/backlog-header/backlog-actions/shared/backlog-action-store";
 import {useToast} from "@/shared/toast/toast";
 
 const mockSprints = [
