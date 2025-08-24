@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer, ReactNode } from "react";
 
-export type UserStory = {
+export type UserStoryView = {
     id: string;
     title: string;
     description?: string;
@@ -14,7 +14,7 @@ export type UserStory = {
     sprintId: string | null;
 };
 
-export type Task = {
+export type TaskView = {
     id: string;
     title: string;
     description?: string;
@@ -27,7 +27,7 @@ export type Task = {
     status: string;
 };
 
-export type Sprint = {
+export type SprintView = {
     id: string;
     name: string;
     status: string;
@@ -39,9 +39,9 @@ export type Sprint = {
 export type DraggedItem = { id: string; type: "story" | "task" };
 
 export type BacklogListState = {
-    userStories: UserStory[];
-    tasks: Task[];
-    sprints: Sprint[];
+    userStories: UserStoryView[];
+    tasks: TaskView[];
+    sprints: SprintView[];
     expandedSprints: string[];
     expandedStories: string[];
     draggedItem: DraggedItem | null;
@@ -59,9 +59,9 @@ const initialState: BacklogListState = {
 };
 
 export type BacklogListAction =
-    | { type: "SET_USER_STORIES"; payload: UserStory[] }
-    | { type: "SET_TASKS"; payload: Task[] }
-    | { type: "SET_SPRINTS"; payload: Sprint[] }
+    | { type: "SET_USER_STORIES"; payload: UserStoryView[] }
+    | { type: "SET_TASKS"; payload: TaskView[] }
+    | { type: "SET_SPRINTS"; payload: SprintView[] }
     | { type: "TOGGLE_EXPANDED_SPRINT"; payload: string }
     | { type: "TOGGLE_EXPANDED_STORY"; payload: string }
     | { type: "SET_DRAGGED_ITEM"; payload: DraggedItem | null }

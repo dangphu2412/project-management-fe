@@ -1,6 +1,6 @@
 import {SidebarTrigger} from "@/shared/design-system/components/ui/sidebar";
-import {BacklogAction} from "@/features/backlog/backlog-header/backlog-actions/backlog-action";
-import {BacklogFilter} from "@/features/backlog/backlog-filters/backlog-filter";
+import {BacklogAction} from "@/features/backlog/backlog-header/backlog-actions/backlog-action.ui";
+import {BacklogFilter} from "@/features/backlog/backlog-filters/backlog-filter.ui";
 import type React from "react";
 
 export function BacklogHeader() {

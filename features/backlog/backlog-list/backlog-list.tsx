@@ -22,13 +22,18 @@ import {
     DropdownMenuTrigger
 } from "@/shared/design-system/components/ui/dropdown-menu";
 import {Card, CardContent, CardHeader} from "@/shared/design-system/components/ui/card";
-import {useBacklogFilterState} from "@/features/backlog/backlog-filters/shared/backlog-filter.store";
-import {useBacklogActionDispatch,} from "@/features/backlog/backlog-header/backlog-actions/shared/backlog-action-store";
+import {useBacklogFilterState} from "@/features/backlog/backlog-filters/backlog-filter.store";
+import {useBacklogActionDispatch,} from "@/features/backlog/backlog-header/backlog-actions/backlog-action.store";
 import {useToast} from "@/shared/toast/toast";
-import {useBacklogListDispatch, useBacklogListState} from "@/features/backlog/backlog-list/shared/backlog-list.store";
+import {useBacklogListDispatch, useBacklogListState} from "@/features/backlog/backlog-list/backlog-list.store";
 import {sprintApiClient} from "@/features/backlog/shared/sprints/sprint-api-client";
 import {userStoryApiClient} from "@/features/backlog/shared/user-story/user-story-api-client";
 import {taskApiClient} from "@/features/backlog/shared/tasks/task-api-client";
+import {
+    fromSprintToSprintView,
+    fromTaskToTaskView,
+    fromUserStoryToUserStoryView
+} from "@/features/backlog/backlog-list/backlog-view.adapter";
 
 export function BacklogList() {
     const { searchQuery, priorityFilter, assigneeFilter } = useBacklogFilterState();
@@ -197,9 +202,9 @@ export function BacklogList() {
 
     useEffect(() => {
         async function load() {
-            listDispatch({ type: 'SET_SPRINTS', payload: await sprintApiClient.getAll() })
-            listDispatch({ type: 'SET_USER_STORIES', payload: await userStoryApiClient.getAll() })
-            listDispatch({ type: 'SET_TASKS', payload: await taskApiClient.getAll() })
+            listDispatch({ type: 'SET_SPRINTS', payload: fromSprintToSprintView(await sprintApiClient.getAll()) })
+            listDispatch({ type: 'SET_USER_STORIES', payload: fromUserStoryToUserStoryView(await userStoryApiClient.getAll()) })
+            listDispatch({ type: 'SET_TASKS', payload: fromTaskToTaskView(await taskApiClient.getAll()) })
         }
 
         load();
