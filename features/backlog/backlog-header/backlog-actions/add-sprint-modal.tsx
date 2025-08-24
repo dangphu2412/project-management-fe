@@ -16,7 +16,7 @@ interface SprintModalProps {
   sprint?: any
 }
 
-export function SprintModal({ isOpen, onClose, onSubmit, sprint }: SprintModalProps) {
+export function AddSprintModal({ isOpen, onClose, onSubmit, sprint }: SprintModalProps) {
   const [formData, setFormData] = useState({
     name: sprint?.name || "",
     goal: sprint?.goal || "",

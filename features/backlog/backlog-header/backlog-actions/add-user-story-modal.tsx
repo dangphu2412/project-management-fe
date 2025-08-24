@@ -20,7 +20,7 @@ interface UserStoryModalProps {
   sprints?: any[]
 }
 
-export function UserStoryModal({ isOpen, onClose, onSubmit, userStory, sprints = [] }: UserStoryModalProps) {
+export function AddUserStoryModal({ isOpen, onClose, onSubmit, userStory, sprints = [] }: UserStoryModalProps) {
   const [formData, setFormData] = useState({
     title: userStory?.title || "",
     description: userStory?.description || "",
@@ -64,7 +64,7 @@ export function UserStoryModal({ isOpen, onClose, onSubmit, userStory, sprints =
   const removeTag = (tagToRemove: string) => {
     setFormData({
       ...formData,
-      tags: formData.tags.filter((tag) => tag !== tagToRemove),
+      tags: formData.tags.filter((tag: any) => tag !== tagToRemove),
     })
   }
 

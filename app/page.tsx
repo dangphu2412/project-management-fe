@@ -6,6 +6,7 @@ import { AppSidebar } from "@/features/sidebar/app-sidebar"
 import { BacklogView } from "@/features/backlog/backlog-view"
 import { ActiveSprintView } from "@/features/sprint/active-sprint-view"
 import { TimelineView } from "@/features/timeline/timeline-view"
+import {ToastProvider} from "@/shared/toast/toast";
 
 export default function TaskManagement() {
   const [activeView, setActiveView] = useState("backlog")
@@ -25,10 +26,12 @@ export default function TaskManagement() {
 
   return (
     <SidebarProvider>
-      <AppSidebar activeView={activeView} onViewChange={setActiveView} />
-      <SidebarInset>
-        <main className="flex-1 overflow-hidden">{renderView()}</main>
-      </SidebarInset>
+      <ToastProvider>
+        <AppSidebar activeView={activeView} onViewChange={setActiveView} />
+        <SidebarInset>
+          <main className="flex-1 overflow-hidden">{renderView()}</main>
+        </SidebarInset>
+      </ToastProvider>
     </SidebarProvider>
   )
 }
