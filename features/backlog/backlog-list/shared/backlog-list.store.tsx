@@ -4,6 +4,11 @@ export type UserStory = {
     id: string;
     title: string;
     description?: string;
+    acceptanceCriteria: string;
+    priority: string;
+    status: string;
+    tags: string[];
+    storyPoints: string;
     priorityId?: string;
     assignee?: string;
     sprintId: string | null;
@@ -17,12 +22,18 @@ export type Task = {
     sprintId: string | null;
     assignee?: string;
     priority: string;
+    tags: string[];
+    dueDate: string;
+    status: string;
 };
 
 export type Sprint = {
     id: string;
     name: string;
     status: string;
+    startDate: string;
+    endDate: string;
+    goal: string;
 };
 
 export type DraggedItem = { id: string; type: "story" | "task" };

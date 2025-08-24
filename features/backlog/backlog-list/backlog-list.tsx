@@ -26,117 +26,9 @@ import {useBacklogFilterState} from "@/features/backlog/backlog-filters/shared/b
 import {useBacklogActionDispatch,} from "@/features/backlog/backlog-header/backlog-actions/shared/backlog-action-store";
 import {useToast} from "@/shared/toast/toast";
 import {useBacklogListDispatch, useBacklogListState} from "@/features/backlog/backlog-list/shared/backlog-list.store";
-
-const mockSprints = [
-    {
-        id: "sprint-1",
-        name: "Sprint 1 - Authentication & Dashboard",
-        status: "planning", // planning, active, completed
-        startDate: "2024-02-01",
-        endDate: "2024-02-14",
-        goal: "Implement user authentication and basic dashboard functionality",
-    },
-    {
-        id: "sprint-2",
-        name: "Sprint 2 - User Management",
-        status: "planning",
-        startDate: "2024-02-15",
-        endDate: "2024-02-28",
-        goal: "Build comprehensive user management features",
-    },
-]
-
-const mockUserStories = [
-    {
-        id: "story-1",
-        title: "As a user, I want to log into the system so that I can access my dashboard",
-        description: "Users need a secure way to authenticate and access their personalized dashboard",
-        acceptanceCriteria:
-            "Given a valid user, when they enter correct credentials, then they should be logged in and redirected to dashboard",
-        priority: "high",
-        storyPoints: "5",
-        assignee: "John Doe",
-        tags: ["authentication", "security"],
-        sprintId: "sprint-1",
-        status: "backlog",
-    },
-    {
-        id: "story-2",
-        title: "As an admin, I want to manage user accounts so that I can control system access",
-        description: "Administrators need the ability to create, update, and deactivate user accounts",
-        acceptanceCriteria: "Given admin privileges, when managing users, then all CRUD operations should be available",
-        priority: "medium",
-        storyPoints: "8",
-        assignee: "Jane Smith",
-        tags: ["admin", "user-management"],
-        sprintId: "sprint-2",
-        status: "backlog",
-    },
-    {
-        id: "story-3",
-        title: "As a user, I want to view my task dashboard so that I can track my work",
-        description: "Users need a comprehensive view of their assigned tasks and progress",
-        acceptanceCriteria:
-            "Given a logged-in user, when they access the dashboard, then they should see their tasks organized by status",
-        priority: "high",
-        storyPoints: "3",
-        assignee: "Mike Johnson",
-        tags: ["dashboard", "tasks"],
-        sprintId: null, // Unassigned to sprint (in backlog)
-        status: "backlog",
-    },
-]
-
-const mockTasks = [
-    {
-        id: "task-1",
-        title: "Implement JWT authentication",
-        description: "Add JWT token-based authentication system",
-        priority: "high",
-        assignee: "John Doe",
-        tags: ["backend", "security"],
-        dueDate: "2024-02-15",
-        status: "backlog",
-        userStoryId: "story-1",
-        sprintId: "sprint-1",
-    },
-    {
-        id: "task-2",
-        title: "Create login form UI",
-        description: "Design and implement the login form interface",
-        priority: "medium",
-        assignee: "Jane Smith",
-        tags: ["frontend", "ui"],
-        dueDate: "2024-02-10",
-        status: "backlog",
-        userStoryId: "story-1",
-        sprintId: "sprint-1",
-    },
-    {
-        id: "task-3",
-        title: "Set up user database schema",
-        description: "Create database tables for user management",
-        priority: "high",
-        assignee: "Mike Johnson",
-        tags: ["backend", "database"],
-        dueDate: "2024-02-20",
-        status: "backlog",
-        userStoryId: "story-2",
-        sprintId: "sprint-2",
-    },
-    {
-        id: "task-4",
-        title: "Design dashboard wireframes",
-        description: "Create wireframes for the main dashboard interface",
-        priority: "medium",
-        assignee: "Jane Smith",
-        tags: ["design", "ui"],
-        dueDate: "2024-02-25",
-        status: "backlog",
-        userStoryId: "story-3",
-        sprintId: null,
-    },
-]
+import {sprintApiClient} from "@/features/backlog/shared/sprints/sprint-api-client";
+import {userStoryApiClient} from "@/features/backlog/shared/user-story/user-story-api-client";
+import {taskApiClient} from "@/features/backlog/shared/tasks/task-api-client";
 
 export function BacklogList() {
     const { searchQuery, priorityFilter, assigneeFilter } = useBacklogFilterState();
@@ -304,9 +196,13 @@ export function BacklogList() {
     }
 
     useEffect(() => {
-        listDispatch({ type: 'SET_SPRINTS', payload: mockSprints })
-        listDispatch({ type: 'SET_USER_STORIES', payload: mockUserStories })
-        listDispatch({ type: 'SET_TASKS', payload: mockTasks })
+        async function load() {
+            listDispatch({ type: 'SET_SPRINTS', payload: await sprintApiClient.getAll() })
+            listDispatch({ type: 'SET_USER_STORIES', payload: await userStoryApiClient.getAll() })
+            listDispatch({ type: 'SET_TASKS', payload: await taskApiClient.getAll() })
+        }
+
+        load();
     }, []);
 
     const renderSprintHeader = (sprint: any) => (

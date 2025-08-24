@@ -2,8 +2,8 @@ import {Button} from "@/shared/design-system/components/ui/button";
 import {Plus} from "lucide-react";
 import React from "react";
 import {TaskModal} from "@/features/tasks/task-modal";
-import {AddSprintModal} from "@/features/backlog/backlog-header/backlog-actions/add-sprint-modal";
-import {AddUserStoryModal} from "@/features/backlog/backlog-header/backlog-actions/add-user-story-modal";
+import {AddSprintModal} from "@/features/backlog/backlog-header/backlog-actions/add-sprint/add-sprint-modal";
+import {AddUserStoryModal} from "@/features/backlog/backlog-header/backlog-actions/add-user-story/add-user-story-modal";
 import {TaskDetailModal} from "@/features/tasks/task-detail-modal";
 import {
     useBacklogActionDispatch,
