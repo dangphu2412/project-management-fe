@@ -201,7 +201,7 @@ export function AddUserStoryModal({ isOpen, onClose, onSubmit, userStory, sprint
               </Button>
             </div>
             <div className="flex flex-wrap gap-2">
-              {formData.tags.map((tag) => (
+              {formData.tags.map((tag: string) => (
                 <Badge key={tag} variant="secondary" className="flex items-center gap-1">
                   {tag}
                   <X className="h-3 w-3 cursor-pointer" onClick={() => removeTag(tag)} />
