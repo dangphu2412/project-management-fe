@@ -1,12 +1,12 @@
 "use client"
 
 import type React from "react"
-import { SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarTrigger } from "@/shared/design-system/components/ui/sidebar"
 
 import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/design-system/components/ui/card"
+import { Badge } from "@/shared/design-system/components/ui/badge"
+import { Button } from "@/shared/design-system/components/ui/button"
 import {
   Plus,
   Settings,
@@ -19,11 +19,11 @@ import {
   ChevronDown,
   ChevronRight,
 } from "lucide-react"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/design-system/components/ui/dropdown-menu"
 import { TaskDetailModal } from "@/features/tasks/task-detail-modal"
 import { TaskModal } from "@/features/tasks/task-modal"
-import { ToastNotification } from "@/components/toast-notification"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { ToastNotification } from "@/shared/design-system/components/toast-notification"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/shared/design-system/components/ui/collapsible"
 
 // Mock sprint data
 const mockSprint = {

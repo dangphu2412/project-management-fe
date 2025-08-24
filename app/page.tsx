@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
+import { SidebarProvider, SidebarInset } from "@/shared/design-system/components/ui/sidebar"
 import { AppSidebar } from "@/features/sidebar/app-sidebar"
 import { BacklogView } from "@/features/backlog/backlog-view"
 import { ActiveSprintView } from "@/features/sprint/active-sprint-view"

@@ -1,11 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/design-system/components/ui/card"
+import { Badge } from "@/shared/design-system/components/ui/badge"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/design-system/components/ui/select"
 import { Calendar, Clock, User, CheckCircle, AlertCircle, Plus } from "lucide-react"
-import { SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarTrigger } from "@/shared/design-system/components/ui/sidebar"
 
 // Mock activity data
 const mockActivities = [

@@ -6,11 +6,12 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "cpn:add": "pnpm dlx shadcn@latest add --"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
-    "@radix-ui/react-accordion": "latest",
+    "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "latest",
     "@radix-ui/react-aspect-ratio": "latest",
     "@radix-ui/react-avatar": "latest",

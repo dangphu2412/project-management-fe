@@ -19,19 +19,19 @@ import {
   ChevronDown,
   ChevronRight,
 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Button } from "@/shared/design-system/components/ui/button"
+import { Input } from "@/shared/design-system/components/ui/input"
+import { Badge } from "@/shared/design-system/components/ui/badge"
+import { Card, CardContent, CardHeader } from "@/shared/design-system/components/ui/card"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/design-system/components/ui/dropdown-menu"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/design-system/components/ui/select"
 import { TaskModal } from "@/features/tasks/task-modal"
 import { TaskDetailModal } from "@/features/tasks/task-detail-modal"
 import { UserStoryModal } from "@/features/backlog/user-story-modal"
 import { SprintModal } from "@/features/backlog/sprint-modal"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { ToastNotification } from "@/components/toast-notification"
-import { SidebarTrigger } from "@/components/ui/sidebar"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/shared/design-system/components/ui/collapsible"
+import { ToastNotification } from "@/shared/design-system/components/toast-notification"
+import { SidebarTrigger } from "@/shared/design-system/components/ui/sidebar"
 
 // Mock data with user stories and tasks
 const mockSprints = [

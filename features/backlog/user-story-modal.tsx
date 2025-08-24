@@ -3,13 +3,13 @@
 import type React from "react"
 
 import { useState } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Badge } from "@/components/ui/badge"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/shared/design-system/components/ui/dialog"
+import { Button } from "@/shared/design-system/components/ui/button"
+import { Input } from "@/shared/design-system/components/ui/input"
+import { Textarea } from "@/shared/design-system/components/ui/textarea"
+import { Label } from "@/shared/design-system/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/design-system/components/ui/select"
+import { Badge } from "@/shared/design-system/components/ui/badge"
 import { X } from "lucide-react"
 
 interface UserStoryModalProps {

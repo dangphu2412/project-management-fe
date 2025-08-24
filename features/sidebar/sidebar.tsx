@@ -1,8 +1,8 @@
 "use client"
 
 import { Calendar, Kanban, List, Settings, User } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { cn } from "@/shared/design-system/utils"
+import { Button } from "@/shared/design-system/components/ui/button"
 
 interface SidebarProps {
   activeView: string

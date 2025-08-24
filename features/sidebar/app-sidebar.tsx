@@ -14,10 +14,10 @@ import {
   SidebarMenuItem,
   SidebarRail,
   useSidebar,
-} from "@/components/ui/sidebar"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+} from "@/shared/design-system/components/ui/sidebar"
+import { Badge } from "@/shared/design-system/components/ui/badge"
+import { Separator } from "@/shared/design-system/components/ui/separator"
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/design-system/components/ui/avatar"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,7 +25,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/shared/design-system/components/ui/dropdown-menu"
 
 interface AppSidebarProps {
   activeView: string

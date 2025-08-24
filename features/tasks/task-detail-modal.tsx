@@ -3,12 +3,12 @@
 import type React from "react"
 
 import { useState } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Textarea } from "@/components/ui/textarea"
-import { Separator } from "@/components/ui/separator"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/shared/design-system/components/ui/dialog"
+import { Button } from "@/shared/design-system/components/ui/button"
+import { Badge } from "@/shared/design-system/components/ui/badge"
+import { Textarea } from "@/shared/design-system/components/ui/textarea"
+import { Separator } from "@/shared/design-system/components/ui/separator"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/design-system/components/ui/select"
 import { Trash2, Calendar, User, Flag, ArrowRight, Edit3, Save, X } from "lucide-react"
 
 interface TaskDetailModalProps {
